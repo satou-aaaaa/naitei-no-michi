@@ -3,5 +3,5 @@
   "private": true,
   "description": "ノベルゲームの自動検査（ブラウザでランダムに選んで最後まで遊び、エラー・止まり・エンディングの到達数を見る）",
   "scripts": { "qa": "node run.mjs" },
-  "dependencies": { "playwright": "1.64.0" }
+  "dependencies": { "playwright": "1.64.1" }
 }
