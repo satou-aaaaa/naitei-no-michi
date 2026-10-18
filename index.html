@@ -1,0 +1,873 @@
+<title>内定への道</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=M+PLUS+1+Code:wght@400;600&display=swap">
+<style>
+/* Layout: 手帳の1ページのようなノベル画面。上に日時と場所、中央に本文、下に選択肢。数値は控えめに上部へ */
+:root{
+  --bg:#e9ecef; --paper:#fbfcfd; --ink:#1c222b; --muted:#5f6977; --line:#d3d9e0;
+  --accent:#2a5fae; --accent-ink:#ffffff; --ok:#1f8257; --bad:#b9461a; --stamp:#c8102e;
+  --mail:#f3f6fa; --chat:#dff3e4; --chat-ink:#14301f;
+  --display:"Dela Gothic One","Hiragino Sans","Yu Gothic",sans-serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --mono:"M PLUS 1 Code",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111419; --paper:#1a1f27; --ink:#e6eaf0; --muted:#98a2b1; --line:#2c3440;
+  --accent:#7aa7f5; --accent-ink:#0c1320; --ok:#56c48f; --bad:#ff8f63; --stamp:#ff5a6e;
+  --mail:#222934; --chat:#1f3a2a; --chat-ink:#d6f2df; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111419; --paper:#1a1f27; --ink:#e6eaf0; --muted:#98a2b1; --line:#2c3440;
+  --accent:#7aa7f5; --accent-ink:#0c1320; --ok:#56c48f; --bad:#ff8f63; --stamp:#ff5a6e;
+  --mail:#222934; --chat:#1f3a2a; --chat-ink:#d6f2df; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.85;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px}
+.wrap{max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:400;font-size:1.45rem;margin:0;letter-spacing:.03em}
+.stats{display:flex;gap:14px;flex-wrap:wrap}
+.stat{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted)}
+.bar{width:40px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .4s}
+.stat.low .bar i{background:var(--bad)}
+.page{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px 22px 22px;display:flex;flex-direction:column;gap:16px;min-height:430px}
+.meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px dashed var(--line);padding-bottom:10px}
+.chapter{font-weight:700;font-size:.9rem}
+.place{font-family:var(--mono);font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.story{display:flex;flex-direction:column;gap:12px;flex:1}
+.ln{margin:0;animation:in .35s ease both}
+.ln.narr{color:var(--ink)}
+.ln .who{display:block;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.05em}
+.ln.say{padding-left:12px;border-left:2px solid var(--line)}
+.mail{background:var(--mail);border:1px solid var(--line);border-radius:4px;padding:12px 14px;font-size:.88rem;animation:in .35s ease both}
+.mail .subj{font-weight:700;display:block;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:6px}
+.mail .from{font-family:var(--mono);font-size:.72rem;color:var(--muted);display:block}
+.job{border:1px solid var(--line);border-radius:4px;background:var(--paper);font-size:.84rem;line-height:1.65;animation:in .35s ease both;overflow:hidden}
+.job-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;background:var(--mail);padding:8px 14px;border-bottom:1px solid var(--line)}
+.job-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--accent);font-weight:600}
+.job-co{font-size:.78rem;color:var(--muted)}
+.job-title{font-weight:700;font-size:.95rem;padding:10px 14px 4px;text-wrap:balance}
+.job-pay{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:0 14px 10px;border-bottom:1px dashed var(--line)}
+.job-pay span{font-size:.72rem;color:var(--muted)}
+.job-pay b{font-family:var(--mono);font-size:1.05rem;font-variant-numeric:tabular-nums}
+.job dl{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:6px 12px;margin:0;padding:10px 14px}
+.job dt{color:var(--muted);font-size:.76rem;padding-top:.15em}
+.job dd{margin:0;white-space:normal}
+.job-note{margin:0;padding:8px 14px 10px;font-size:.72rem;color:var(--muted);border-top:1px solid var(--line)}
+@media (max-width:420px){.job dl{grid-template-columns:1fr;gap:0 0}.job dd{margin-bottom:8px}}
+.stage{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:4px;overflow:hidden;background:#20242c}
+.stage .bg,.stage .bg svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.chara{position:absolute;left:50%;bottom:0;height:90%;aspect-ratio:200/230;transform:translateX(-50%);transition:opacity .25s,transform .25s}
+.chara svg{width:100%;height:100%;display:block}
+.chara.off{opacity:0;transform:translateX(-50%) translateY(10px)}
+.stage.online .chara{bottom:14%;height:76%;background:#4a5262;border-radius:6px}
+.plate{position:absolute;left:10px;top:10px;background:#000000b3;color:#fff;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:3px}
+.av{display:inline-block;width:30px;height:30px;border-radius:50%;overflow:hidden;vertical-align:middle;background:var(--mail);margin-right:8px;border:1px solid var(--line)}
+.av svg{width:100%;height:100%;display:block}
+.code{background:var(--mail);border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:.76rem;line-height:1.6;overflow-x:auto;animation:in .35s ease both}
+.code-lang{display:block;padding:4px 12px;font-size:.68rem;color:var(--muted);border-bottom:1px solid var(--line)}
+.code ol{margin:0;padding:8px 12px 8px 3.2em;white-space:pre}
+.code li::marker{color:var(--muted);font-size:.7rem}
+.resume{display:flex;flex-direction:column;gap:10px}
+.gallery{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0;padding:0;list-style:none}
+.gallery li{font-size:.75rem;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.gallery li.got{border-color:var(--accent);color:var(--ink)}
+.memo{background:#fff6c9;color:#3b3313;border-radius:2px;padding:12px 14px;font-size:.86rem;transform:rotate(-.6deg);box-shadow:0 2px 6px #0002;white-space:pre-line;animation:in .35s ease both}
+.memo-head{display:block;font-size:.72rem;font-weight:700;color:#8a6d00;margin-bottom:4px}
+.memo-tag{display:block;font-style:normal;font-size:.72rem;color:var(--ok);margin-top:2px}
+.planner,.nego{display:flex;flex-direction:column;gap:8px}
+.plan-head{font-weight:700;font-size:.9rem}
+.plan-row{display:grid;grid-template-columns:1.6em minmax(0,1fr);align-items:center;gap:8px}
+.plan-day{font-weight:700;color:var(--muted);text-align:center}
+.seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.seg-b{font:inherit;font-size:.78rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 2px;cursor:pointer}
+.seg-b.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.plan-note{margin:0;font-size:.75rem;color:var(--muted)}
+.nego-row{display:flex;align-items:center;justify-content:center;gap:16px}
+.nego-row .seg-b{width:64px;font-size:1rem}
+.nego-val{font-family:var(--mono);font-size:1.1rem}.nego-val b{font-size:1.8rem;font-variant-numeric:tabular-nums}
+.chat{align-self:flex-start;background:var(--chat);color:var(--chat-ink);border-radius:14px 14px 14px 4px;padding:8px 14px;max-width:85%;font-size:.92rem;animation:in .35s ease both}
+.chat .who{display:block;font-size:.7rem;opacity:.75}
+.next{align-self:flex-end;font:inherit;font-size:.85rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px 4px}
+.next:hover{color:var(--accent)}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px 14px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.choice:hover{border-color:var(--accent)}
+.choice small{font-family:var(--mono);font-size:.72rem;color:var(--muted);white-space:nowrap}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.primary{font:inherit;font-weight:700;background:var(--accent);color:var(--accent-ink);border:none;border-radius:6px;padding:12px 16px;cursor:pointer}
+.ending{position:relative;display:flex;flex-direction:column;gap:12px;animation:in .5s ease both}
+.ending h2{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:0;text-wrap:balance}
+.ending dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:.9rem}
+.ending dt{color:var(--muted)} .ending dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.stamp{position:absolute;right:0;top:-4px;font-family:var(--display);color:var(--stamp);border:3px solid var(--stamp);border-radius:50%;width:76px;height:76px;display:grid;place-items:center;transform:rotate(-12deg);font-size:1rem;opacity:.85}
+.hint{font-size:.75rem;color:var(--muted);margin:0}
+@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.ln,.mail,.chat,.ending,.job,.memo{animation:none}.chara{transition:none}.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>内定への道</h1>
+    <div class="stats" id="stats"></div>
+  </header>
+  <main class="page" id="page">
+    <div class="meta"><span class="chapter" id="chapter"></span><span class="place" id="place"></span></div>
+    <div class="stage" id="stage"><div class="bg" id="bg"></div><div class="chara off" id="chara"></div><div class="plate" id="plate" hidden></div></div>
+    <div class="story" id="story" aria-live="polite"></div>
+    <div id="controls"></div>
+  </main>
+  <p class="hint">画面をタップ、または Enter キーで読み進めます。体力が0になると活動を休むことになります。</p>
+</div>
+
+<script>
+const START={stamina:7,conf:4,prep:3,work:6,apps:0,rejects:0,salary:520,cur:420,fs:0,company:0,flags:{},side:null,last:null,unlock:0,notes:{cult:{},code:{},runs:0}};
+// 社風：会社ごとに、どんな答え方が評価されるか（num=数字と成果、team=協調、self=自走）
+const CULT=[{num:2.5,team:0,self:1},{num:0,team:2.5,self:-1},{num:1,team:-1,self:2.5}];
+const STYLE_NAME={num:"数字と成果で話す",team:"協調性を見せる",self:"自分で動く姿勢を見せる"};
+const bestStyle=i=>Object.entries(CULT[i%3]).sort((a,b)=>b[1]-a[1])[0][0];
+const cult=st=>st?(CULT[S.company%3][st]||0):0;
+const pres=()=>["代表・堂本","代表・湊","CEO・青井"][S.company%3];
+let S;
+const CO=["株式会社ハルモニア","ミナトシステムズ株式会社","株式会社ブルーラインズ"];
+const co=()=>CO[S.company%CO.length];
+const route=()=>S.flags.route||"agent";
+const tl=()=>"テックリード・"+["郷田","真壁","東"][S.company%3];
+const contact=()=>route()==="agent"?"森下（エージェント）":"採用担当・片桐";
+const OINORI=(n)=>["MAIL",`選考結果のご連絡`,`${n||co()} 採用担当`,"このたびは弊社求人にご応募いただき、誠にありがとうございました。慎重に選考を重ねました結果、誠に残念ながら今回はご期待に添えない結果となりました。\n末筆ながら、今後のご活躍を心よりお祈り申し上げます。"];
+
+// 求人票。[項目名, 内容] の並び。内容の改行は \n
+const JOBS=[
+ {co:"株式会社ハルモニア",title:"バックエンドエンジニア／決済基盤のGoリプレイスをリードしてください",pay:"550万円〜850万円",rows:[
+  ["事業内容","中小企業向けの請求書・決済SaaS「ハルペイ」（導入社数4,200社）"],
+  ["募集背景","事業拡大に伴う増員です。決済基盤のJavaモノリスを、Goのマイクロサービスへ移行しています。"],
+  ["業務内容","・決済APIの設計、開発、運用\n・JavaからGoへの段階的な移行\n・コードレビュー、技術選定への参加"],
+  ["必須スキル","・Webアプリのサーバーサイド開発経験3年以上\n・RDBを用いた設計、開発経験"],
+  ["歓迎スキル","・Goでの開発経験\n・AWSでの運用経験\n・決済、金融ドメインの知識"],
+  ["開発環境","Go / Java 11 / PostgreSQL / AWS（ECS, Aurora）/ Terraform / GitHub Actions / Datadog"],
+  ["開発体制","1チーム5名のスクラム、2週間スプリント。本番デプロイは1日平均8回"],
+  ["働き方","フルフレックス（コアタイムなし）、リモート可（月2回出社）"],
+  ["選考フロー","カジュアル面談 → 適性検査・論述 → 技術面接 → 最終面接"]],
+  note:"※想定年収は、経験・能力を考慮のうえ決定します。\n※固定残業代（月20時間分）を含みます。超過分は別途支給します。"},
+ {co:"ミナトシステムズ株式会社",title:"サーバーサイドエンジニア／自社開発と受託開発の両方に携われます",pay:"400万円〜900万円",rows:[
+  ["事業内容","金融・物流向けシステムの受託開発、自社パッケージ「MINATO勤怠」の開発・販売"],
+  ["募集背景","風通しがよく、アットホームな職場です。一緒に会社を大きくしてくれる仲間を募集します。"],
+  ["業務内容","お客様の課題をヒアリングし、要件定義から運用まで一貫して担当していただきます。"],
+  ["必須スキル","・Javaでの開発経験2年以上\n・コミュニケーション能力の高い方"],
+  ["歓迎スキル","・リーダー、PM経験\n・基本情報技術者などの資格"],
+  ["開発環境","Java 8 / Spring / Struts（一部）/ Oracle / SVN（Gitへ移行予定）"],
+  ["開発体制","案件により異なります"],
+  ["働き方","原則出社（案件によりリモート可）"],
+  ["福利厚生","資格取得支援（不合格でも受験料を支給）、社員旅行、毎週水曜の全社定例"],
+  ["選考フロー","書類選考 → 一次面接 → 適性検査・論述 → 最終面接"]],
+  note:"※固定残業代（月45時間分、81,000円）を含みます。\n※試用期間3か月（条件の変更なし）"},
+ {co:"株式会社ブルーラインズ",title:"フルスタックエンジニア（テックリード候補）／0→1のプロダクト開発",pay:"450万円〜700万円＋ストックオプション",rows:[
+  ["事業内容","飲食店向けモバイルオーダー「ブルーオーダー」（シリーズA調達済み）"],
+  ["募集背景","プロダクトの急成長に、開発が追いついていません。"],
+  ["業務内容","企画から実装、インフラ、採用まで、幅広くお任せします。"],
+  ["必須スキル","・Webサービスの開発経験\n・自走できる方"],
+  ["歓迎スキル","・React / TypeScript\n・スタートアップでの勤務経験"],
+  ["開発環境","TypeScript / Next.js / NestJS / Firebase / Google Cloud"],
+  ["開発体制","エンジニア3名（CTO含む）"],
+  ["働き方","フルリモート、裁量労働制"],
+  ["選考フロー","カジュアル面談 → 技術課題（持ち帰り）→ CTO面接 → 代表面接 → 体験入社（1日）"]],
+  note:"※裁量労働制のため、みなし労働時間は1日9時間です。"}];
+const JOB_AGENT={co:"株式会社ネクストフォース",title:"【未経験歓迎】JavaScriptエンジニア／年収アップ実績多数",pay:"300万円〜1,000万円",rows:[
+  ["業務内容","お客様先でのシステム開発業務"],
+  ["必須スキル","Java または JavaScript の開発経験"],
+  ["開発環境","プロジェクトによる"],
+  ["勤務地","お客様先（東京都内・神奈川県）"],
+  ["働き方","お客様先の規定に準じます"]],
+  note:"※固定残業代（月45時間分）を含みます。"};
+
+// ライブコーディングの問題。ans は正解の選択肢の番号
+const CODES=[
+ {code:["Go",`func Charge(ctx context.Context, userID string, amount int) error {
+    tx, err := db.BeginTx(ctx, nil)
+    if err != nil {
+        return err
+    }
+    if err := debit(tx, userID, amount); err != nil {
+        return err
+    }
+    return tx.Commit()
+}`],opts:["2行目：トランザクションの開始の仕方","6〜7行目：失敗したときにロールバックしていない","9行目：Commit の戻り値をそのまま返している"],ans:1,
+  why:"引き落としに失敗したとき、トランザクションを閉じずに戻っている。接続とロックが残り続け、ピーク時に決済が詰まった。defer tx.Rollback() を入れるのが定番だ。"},
+ {code:["Java",`public boolean isAdmin(User user) {
+    String role = user.getRole();
+    return role == "ADMIN";
+}`],opts:["1行目：boolean ではなく Boolean を返すべき","2行目：変数名が短すぎる","3行目：文字列を == で比べている"],ans:2,
+  why:"Java の == は、文字列の中身ではなく参照を比べる。DBから読んだ \"ADMIN\" は別のオブジェクトなので、管理者なのに false になる。\"ADMIN\".equals(role) と書くべきだ。"},
+ {code:["TypeScript",`async function totalPrice(shopId: string) {
+  const orders = await getOrders(shopId);
+  let total = 0;
+  orders.forEach(async (o) => {
+    total += await getPrice(o.itemId);
+  });
+  return total;
+}`],opts:["3行目：let ではなく const にすべき","4〜6行目：forEach の中の await を待っていない","2行目：getOrders を await している"],ans:1,
+  why:"forEach は async 関数の完了を待たない。合計が足される前に return され、売上が0円で表示された。for...of か Promise.all を使う。"}];
+// 行の形式: ["", 地の文] / ["名前", セリフ] / ["LINE", 名前, 本文] / ["MAIL", 件名, 差出人, 本文]。関数なら条件付きの行
+// 作中の転職サービス名は架空。仕組みは実在のエンジニア向けサービス（ドラフト型、GitHub連携型、エージェント）を参考にしている
+const SC={
+start:{ch:"第1章　決意",place:"火曜 23:10／自席",lines:[
+  ()=>S.notes.runs?["",`（${S.notes.runs+1}周目）前回の転職活動のメモが、まだ手元に残っている。`]:null,
+  ["","本番障害の切り戻しが終わったのは、22時を過ぎてからだった。"],
+  ["","受託開発の会社でバックエンドを書いて5年目。年収は420万円。去年の昇給は月4,000円だった。"],
+  ["LINE","佐伯（同期）","おつかれ。急だけど、俺来月で辞めるわ"],
+  ["LINE","佐伯（同期）","ドラフト型の転職サイトで指名もらって、年収150万上がった"],
+  ["","150万。今の会社で毎年それだけ上がることは、たぶん一生ない。"]],
+ choices:[
+  {t:"「おめでとう。実は俺も考えてる」と返す",fx:{conf:1},next:"axis"},
+  {t:"「まじか。どのサイト？」と聞く",fx:{prep:1},run:()=>S.flags.saeki=1,next:"axis"},
+  {t:"既読のまま、エンジニアの年収相場を検索する",fx:{prep:1},next:"axis"}]},
+
+axis:{ch:"第1章　決意",place:"火曜 23:40／帰りのタクシー乗り場",lines:[
+  ["","終電はもうない。タクシーを待ちながら、なぜエンジニアになったのかを考えた。"],
+  ["","大学2年の夏、初めて書いたWebアプリが動いた夜。誰にも見せる相手がいなくて、一人で笑った。"],
+  ["","入社1年目には、黒田さんが夜中までコードレビューに付き合ってくれた。「動けばいいんじゃない。読めるように書け」と言われた。"],
+  ["","あのころの自分が今の自分を見たら、何と言うだろう。"],
+  ["","転職するなら、何をいちばん大事にしたいか。"]],
+ choices:[
+  {t:"正当に評価されて、年収が上がること",run:()=>S.flags.axis="money",next:"register"},
+  {t:"新しい技術に触れて、エンジニアとして伸びること",run:()=>S.flags.axis="tech",next:"register"},
+  {t:"尊敬できる人と、いいチームで働くこと",run:()=>S.flags.axis="people",next:"register"}]},
+
+register:{ch:"第1章　決意",place:"土曜 10:12／自宅",lines:[
+  ()=>S.flags.saeki?["LINE","佐伯（同期）","ハイヤーフェス。企業が先に年収を出して指名してくるから、相場がわかるよ"]:null,
+  ["","調べてみると、エンジニアの転職市場では提示年収の中央値が600万円台らしい。"],
+  ["","年収が低い人ほど、転職したときの上げ幅が大きい。市場の競争で、年収は中央値に寄っていくからだ。"],
+  ["","エンジニア向けの転職サービスはいくつもある。どれから始めよう。"]],
+ choices:[
+  {t:"ドラフト型「ハイヤーフェス」に登録する",run:()=>S.flags.route="draft",next:"draft"},
+  {t:"GitHub連携型「コミットスカウト」に登録する",run:()=>S.flags.route="github",next:"github"},
+  {t:"IT専門の転職エージェントに相談する",run:()=>S.flags.route="agent",next:"agent"}]},
+
+draft:{ch:"第1章　決意",place:"水曜 21:40／自宅",lines:[
+  ["","ハイヤーフェスは、運営の審査を通ったレジュメだけが企業に公開される。企業は年収を提示して指名し、他社の提示額も見える仕組みだ。"],
+  ["MAIL","レジュメ審査結果のご連絡（差し戻し）","ハイヤーフェス 運営事務局","職務経歴に、担当された業務の一覧のみが記載されています。「課題・取り組み・成果」の流れで、具体的にご記入のうえ再申請ください。"],
+  ["","いきなり差し戻された。自分が何を成し遂げたのか、一行も書いていなかった。"]],
+ choices:[
+  {t:"課題・取り組み・成果で書き直す（決済APIの応答を800msから120msに改善、など）",fx:{prep:2,stamina:-1},next:"draft_result"},
+  {t:"最低限だけ直して再申請する",fx:{prep:1},run:()=>S.flags.weak=1,next:"draft_result"}]},
+
+draft_result:{ch:"第1章　決意",place:"2週間後 07:40／通勤電車",enter:()=>{S.salary=S.flags.weak?540:580;add({conf:2});},lines:[
+  ["","ドラフトの期間が終わった。届いた指名は3件。"],
+  ()=>["MAIL",`【指名】バックエンドエンジニア／提示年収 ${S.salary}万円`,"株式会社ハルモニア","指名理由：決済まわりの性能改善の経験に注目しました。Goによる基盤リプレイスを一緒に進めていただきたいです。"],
+  ["MAIL","【指名】サーバーサイドエンジニア／提示年収 500万円","ミナトシステムズ株式会社","指名理由：幅広いご経験をお持ちのため。"],
+  ["MAIL","【指名】フルスタックエンジニア／提示年収 410万円","株式会社ブルーラインズ","現年収を下回る理由：フロントエンドの実務経験がないため。"],
+  ["","自分の値段が、数字で並んでいる。いちばん具体的な指名をくれたハルモニアを承諾した。"],
+  ["","指名を承諾すると、書類選考はなし。まずはカジュアル面談から、とのことだった。"]],
+ next:"plan1"},
+
+github:{ch:"第1章　決意",place:"水曜 21:40／自宅",lines:[
+  ["","コミットスカウトは、GitHubのコードと活動量からスキル偏差値を出す。企業と自分の両方が「いいかも」を押すとマッチして、カジュアル面談に進める。"],
+  ["","連携した結果、スキル偏差値は48.2。"],
+  ["","仕事のコードは全部、社内のGitLabにある。GitHubの草は、ほとんど生えていなかった。"]],
+ choices:[
+  {t:"週末を使って、使っているOSSにPRを出す",fx:{stamina:-2,prep:1,conf:1},run:()=>S.flags.oss=1,next:"github_result"},
+  {t:"個人開発のツールを公開してREADMEを整える",fx:{stamina:-1,prep:1},next:"github_result"},
+  {t:"偏差値は気にせず、そのまま待つ",fx:{stamina:1},next:"github_result"}]},
+
+github_result:{ch:"第1章　決意",place:"2週間後 07:40／通勤電車",enter:()=>{S.salary=S.flags.oss?560:540;},lines:[
+  ()=>S.flags.oss?["","PRはマージされた。偏差値は51.6に上がった。"]:["","偏差値は変わらない。それでも、職務経歴を読んだ企業から「いいかも」が届き始めた。"],
+  ["","「いいかも」は12件。そのうち、こちらからも押していた株式会社ハルモニアとマッチした。"],
+  ["MAIL","マッチングのお知らせ","コミットスカウト","株式会社ハルモニアとマッチしました。まずはカジュアル面談で、お互いのことを知りましょう。"]],
+ next:"plan1"},
+
+agent:{ch:"第1章　決意",place:"水曜 19:30／オンライン面談",enter:()=>S.salary=520,lines:[
+  ["森下","はじめまして、IT専門のキャリアアドバイザー森下です。ご経歴、拝見しました！"],
+  ["森下","Javaのご経験が5年ですね。JavaScriptの求人も多いので、そちらもご紹介できますよ。"],
+  ["","JavaとJavaScriptは、名前が似ているだけの別物だ。"],
+  ["森下","今週中に、求人を15社ほどお送りしますね。"],
+  ["","その夜、本当に15件届いた。「Java」と書いてあれば何でも入っている。"],
+  ["JOB",JOB_AGENT],
+  ["","想定年収の幅は700万円。勤務地は「お客様先」。開発環境は「プロジェクトによる」。"]],
+ choices:[
+  {t:"技術スタックと希望の軸を、森下さんに伝え直す",fx:{prep:1,conf:1},next:"docs"},
+  {t:"勧められるまま全部に応募する",fx:{stamina:-2},run:()=>S.flags.mass=1,next:"docs"},
+  {t:"自分で気になる3社にしぼる",fx:{prep:1},next:"docs"}]},
+
+docs:{ch:"第1章　決意",place:"日曜 23:05／自宅",lines:[
+  ["","職務経歴書を書く。担当したシステムを並べると、それらしい見た目にはなった。"],
+  ["","でも読み返すと、自分が何を成し遂げたのかが書かれていない。"]],
+ choices:[
+  {t:"成果を数字で書き直す（応答速度、障害件数、リリース頻度）",fx:{prep:2,stamina:-1},next:"docs_result"},
+  {t:"前に作った書類を使い回す",fx:{stamina:1},run:()=>S.flags.reuse=1,next:"docs_result"}]},
+
+docs_result:{ch:"第1章　決意",place:"2週間後 07:40／通勤電車",
+ enter:()=>{const n=S.flags.reuse||S.flags.mass?4:2;S.rejects+=n;add({conf:-1});},
+ lines:[
+  ["","応募してから2週間。届くのは、同じ書き出しのメールばかりだ。"],
+  ()=>OINORI("北斗ロジスティクス株式会社"),
+  ()=>["",`これで${S.rejects}通目。理由はどこにも書かれていない。`],
+  ["森下","株式会社ハルモニアさんから、まずはカジュアル面談でお話ししたいと連絡がありました！"]],
+ next:"plan1"},
+
+casual:{ch:"第2章　カジュアル面談",place:()=>"金曜 20:00／オンライン（"+co()+"）",lines:[
+  ()=>S.company>0?["",`気を取り直して、${co()}とのカジュアル面談に臨む。`]:null,
+  ["","面談の前に、求人票をもう一度読み返した。"],
+  ()=>["JOB",JOBS[S.company%3]],
+  ()=>[["","想定年収の上限は850万円。ただし、上限で入る人はほとんどいないと聞く。"],["","想定年収の幅は500万円。「アットホーム」と「コミュニケーション能力」が、少し気になる。"],["","「自走できる方」。言い換えると、誰も教えてくれないということだ。"]][S.company%3],
+  ["開発マネージャー・小野寺","今日は選考ではないので、気楽にお話ししましょう。服装も自由で大丈夫です。"],
+  ["","パーカーで来てよかった、と思ったのは最初の5分だけだった。"],
+  ["開発マネージャー・小野寺","ところで、志望動機を教えてもらえますか？ あと、今の現場の技術的な課題と、その解決方法も。"],
+  ["","雑談のはずが、気づけば面接になっていた。"]],
+ choices:[
+  {t:"「今のチームで、レビューの文化を作ってきました」と人との関わりを話す",style:"team",check:2,pass:"casual_pass",fail:"casual_fail"},
+  {t:"決済APIの応答を800msから120msにした話を、数字で話す",style:"num",check:2,pass:"casual_pass",fail:"casual_fail"},
+  {t:"「誰にも頼まれずに、監視の仕組みを作りました」と自分で動いた話をする",style:"self",check:2,pass:"casual_pass",fail:"casual_fail"},
+  {t:"雑談のつもりで「まだ転職するか迷っていて」と正直に話す",check:0,pass:"casual_pass",fail:"casual_fail"}]},
+
+casual_fail:{ch:"第2章　カジュアル面談",place:"4日後 21:30／自宅",enter:()=>{S.rejects++;add({stamina:-2,conf:-1,prep:1});},lines:[
+  ()=>["MAIL","カジュアル面談のお礼",co()+" 採用担当","先日はお時間をいただき、ありがとうございました。社内で検討しました結果、今回は選考へのご案内を見送らせていただくことになりました。"],
+  ["","「選考ではない」と言われた面談で、落ちた。"],
+  ()=>memoLine(),
+  ["","カジュアル面談でも、評価はされている。次からは、面接のつもりで準備しよう。"]],
+ choices:[
+  {t:"すぐに次の会社と面談する",run:()=>S.company++,next:"casual"},
+  {t:"週末は何もしないで休む",fx:{stamina:3},run:()=>S.company++,next:"casual"}]},
+
+casual_pass:{ch:"第2章　カジュアル面談",place:"翌日 12:15／社員食堂",enter:()=>add({conf:1}),lines:[
+  ()=>["MAIL","次回選考のご案内",co()+" 採用担当","先日のカジュアル面談、ありがとうございました。ぜひ選考に進んでいただきたく、ご連絡しました。\n次回：適性検査・論述試験（土曜 10:00〜）、その後に技術面接を予定しています。"],
+  ["","カジュアル面談に、合否があった。でも、とにかく進めた。"]],
+ next:"plan2"},
+
+mother:{ch:"第3章　両立",place:"日曜 19:00／自宅",lines:[
+  ["","実家の母から電話がかかってきた。"],
+  ["母","元気にしてる？ ちゃんと食べてるの？"],
+  ["母","今の会社、大きなところと取引があるんでしょう。安定してるなら、それが一番よ。"],
+  ["母","お父さんだって、定年まで同じ会社だったんだから。"],
+  ["","父は同じ会社に38年勤めた。それが幸せだったのかどうか、聞いたことはない。"]],
+ choices:[
+  {t:"「実は、転職を考えてる」と話す",fx:{conf:1},run:()=>S.flags.mom=1,next:"mother2"},
+  {t:"「うん、元気にやってるよ」と話をそらす",next:"juggle"}]},
+
+mother2:{ch:"第3章　両立",place:"日曜 19:20／自宅",lines:[
+  ["母","転職……大丈夫なの？ 今より悪くなったらどうするの。",""],
+  ["","しばらく沈黙があった。電話の向こうで、テレビの音がしている。"],
+  ["母","……お父さんに代わるね。","neutral"],
+  ["","父は「そうか」とだけ言った。それから少しして、「俺は、選ばなかったからな」と付け足した。"],
+  ["","その一言の意味を、電話を切ってからもずっと考えていた。"]],
+ next:"juggle"},
+
+juggle:{ch:"第3章　両立",place:"月曜 09:02／職場",lines:[
+  ["","技術面接は木曜の14時。木曜は、今のプロジェクトのリリース日だ。"],
+  ["黒田課長","木曜は抜けられないだろ。リリース作業、君しか手順わからないんだから。"],
+  ["","有給の残りは、あと4日。"]],
+ choices:[
+  {t:"「私用で」と有給を取り、手順書を書いて渡す",fx:{stamina:-1,prep:1},next:"juggle2"},
+  {t:"「歯医者に行く」と言って昼に抜ける",fx:{conf:-1},run:()=>S.flags.lie=1,next:()=>S.flags.suspect?"juggle_lie":"juggle2"},
+  {t:"夜のオンライン面接に変えてもらう",fx:{stamina:-1},run:()=>S.flags.online=1,next:"test"}]},
+
+juggle_lie:{ch:"第3章　両立",place:"月曜 09:10／職場",enter:()=>add({conf:-1}),lines:[
+  ["黒田課長","また歯医者か。……まあ、いい。","frown"],
+  ["","黒田さんは、それ以上何も聞かなかった。それがかえって重かった。"]],
+ next:"juggle2"},
+
+juggle2:{ch:"第3章　両立",place:"水曜 12:40／休憩スペース",lines:[
+  ["","昼休み、ノートPCでアルゴリズムの問題を解いていると、後ろから声がした。"],
+  ["野口（同僚）","昼休みに競プロやってるの、珍しいね。……もしかして、転職？"]],
+ choices:[
+  {t:"「最近ハマってるだけ」とごまかす",fx:{conf:-1},next:"test"},
+  {t:"笑ってごまかす",next:"test"},
+  {t:"「……内緒な」と打ち明ける",fx:{conf:1},run:()=>S.flags.noguchi=1,next:"test"}]},
+
+test:{ch:"第4章　適性検査と論述",place:()=>"土曜 10:00／"+co()+" 会議室",lines:[
+  ["","適性検査は、とにかく長かった。後半は、ほとんど勘で答えた。"],
+  ["人事・川島","続いて論述試験です。こちらの用紙に、手書きでご記入ください。"],
+  ["","手書き。コードは一行も書かせないらしい。"],
+  ["","設問：当社の課題と、あなたが貢献できることを述べてください。"]],
+ choices:[
+  {t:"デプロイ頻度やリードタイムなどの指標を使って、品質の上げ方を書く",fx:{stamina:-1},run:()=>S.fs=2+S.prep*.2,next:"livecode"},
+  {t:"無難に「チームに貢献したい」とまとめる",run:()=>S.fs=1,next:"livecode"},
+  {t:"「採用でコードを書かせたほうがいい」と提案を書く",fx:{conf:1},run:()=>S.fs=.5,next:"livecode"}]},
+
+livecode:{ch:"第5章　技術面接",place:()=>S.flags.online?"木曜 20:00／自宅（オンライン）":"木曜 14:00／"+co()+" 会議室B",lines:[
+  ["","翌日、適性検査と論述は通過したと連絡があった。技術面接の前半は、ライブコーディングだった。"],
+  [tl,"このコード、先月本番で障害を起こしたやつ。どこが悪いか言って。","smug"],
+  ()=>["CODE",...CODES[S.company%3].code]],
+ choices:[0,1,2].map(i=>({t:()=>CODES[S.company%3].opts[i],memo:()=>S.notes.code[S.company%3]&&i===CODES[S.company%3].ans?"メモ：前回の正解":"",run:()=>{const c=CODES[S.company%3];if(i===c.ans){add({prep:1,conf:1});S.tmp="ok";}else{add({conf:-1});S.tmp="ng";}},next:"livecode_result"}))},
+
+livecode_result:{ch:"第5章　技術面接",place:()=>S.flags.online?"木曜 20:10／自宅（オンライン）":"木曜 14:10／"+co()+" 会議室B",lines:[
+  ()=>S.tmp==="ok"?[tl,"……正解。そこ、気づかない人多いんだよね。","neutral"]:[tl,"違うね。正解はこっち。","smug"],
+  ()=>{S.notes.code[S.company%3]=1;return ["",CODES[S.company%3].why];},
+  ()=>S.tmp==="ok"?["","郷田の態度は変わらない。でも、ノートPCから一瞬だけ顔を上げた。".replace("郷田",tl().slice(7))]:["","頭が真っ白になったまま、面接は後半に進んだ。"]],
+ next:"interview1"},
+
+interview1:{ch:"第5章　技術面接",place:()=>S.flags.online?"木曜 20:00／自宅（オンライン）":"木曜 14:00／"+co()+" 会議室B",lines:[
+  ()=>S.flags.retry?["",`今度は、${co()}の技術面接だ。`]:["","後半は、経歴についての質問だった。"],
+  ()=>["",`面接官の${tl()}は、足を組んだまま、ノートPCから顔を上げない。`],
+  [tl,"で、5年もいて何作ったの？"],
+  [tl,"受託ってさ、言われたものを作るだけでしょ。うち、そういう人は間に合ってるんだよね。"]],
+ choices:[
+  {t:"決済APIの改善を、数字と設計の判断理由で淡々と話す",style:"num",check:2.5,pass:"interview1_pass",fail:"interview1_fail"},
+  {t:"「チームで議論して決めました。皆さんからも学びたいです」と話す",style:"team",check:2.5,pass:"interview1_pass",fail:"interview1_fail"},
+  {t:"「その前提は違うと思います。受託でも、設計は自分で決めてきました」と言い返す",style:"self",check:2,fx:{conf:1},run:()=>S.flags.pushback=1,pass:"interview1_pass",fail:"interview1_fail"}]},
+
+interview1_fail:{ch:"第5章　技術面接",place:"3日後 21:30／自宅",enter:()=>{S.rejects++;add({stamina:-2,conf:-1,prep:1});},lines:[
+  OINORI,
+  ()=>memoLine(),
+  ["","面接官の態度は、そのまま会社の文化なのかもしれない。そう思っても、落ちたことは悔しい。"],
+  ()=>S.flags.pushback?["","言い返したことは、後悔していない。"]:null,
+  ["","話した内容と相手の反応は、メモに残してある。"]],
+ choices:[
+  {t:"すぐに次の会社の面接を入れる",run:()=>{S.company++;S.flags.retry=1;},next:"interview1"},
+  {t:"週末は何もしないで休む",fx:{stamina:3},run:()=>{S.company++;S.flags.retry=1;},next:"interview1"}]},
+
+interview1_pass:{ch:"第5章　技術面接",place:"翌日 12:15／社員食堂",enter:()=>add({conf:1}),lines:[
+  [tl,"……まあ、いいんじゃない。"],
+  ()=>["",`面接の最後に、${tl().slice(7)}はそれだけ言った。`+"この人と同じチームになるのか、とも思った。"],
+  ()=>["MAIL","技術面接結果のご連絡",co()+" 採用担当","ぜひ最終面接にお進みください。代表の"+pres().split("・")[1]+"が担当いたします。"],
+  ()=>S.flags.noguchi?["野口","お、なんかいいことあった顔してる。"]:null],
+ next:"saeki2"},
+
+saeki2:{ch:"第5章　技術面接",place:"土曜 22:15／自宅",lines:[
+  ["LINE","佐伯（同期）","新しい会社、1か月たった"],
+  ["LINE","佐伯（同期）","年収は上がったけど、思ってたのと違うこともある。オンボーディングなんて無いに等しいし、ドキュメントも古い"],
+  ["LINE","佐伯（同期）","でも、戻りたいとは一回も思ってない"],
+  ["","年収が上がれば、全部うまくいくわけじゃない。それでも佐伯の文面は、前より楽しそうに見えた。"]],
+ choices:[
+  {t:"「何がいちばん違った？」と聞く",fx:{conf:1},run:()=>S.flags.asked=1,next:"saeki3"},
+  {t:"「そっか、がんばれ」と返す",next:"parallel"}]},
+
+saeki3:{ch:"第5章　技術面接",place:"土曜 22:30／自宅",lines:[
+  ["LINE","佐伯（同期）","自分で選んだって思えること、かな"],
+  ["LINE","佐伯（同期）","前は、何やっても月4,000円だった。今は、うまくいかなくても自分のせいだって思える。それが案外、気持ちいい"],
+  ["","自分で選んだと思えること。最終面接の前に、その言葉を覚えておこうと思った。"]],
+ next:"parallel"},
+
+plan1:{ch:"第2章　カジュアル面談",place:"日曜 22:00／自宅",plan:{week:1,next:"casual"},lines:[
+  ["","来週の平日の夜をどう使うか、カレンダーを開いた。"],
+  ["","面接対策をすれば準備が上がる。応募を増やせば、もしものときの保険になる。本業を削れば職場で目立つ。休まなければ体力が尽きる。"]]},
+plan2:{ch:"第3章　両立",place:"日曜 22:00／自宅",plan:{week:2,next:"mother"},lines:[
+  ["","次は適性検査と技術面接。平日の夜は、今週も5回しかない。"]]},
+plan3:{ch:"第6章　最終面接",place:"日曜 22:00／自宅",plan:{week:3,next:"final"},lines:[
+  ["","最終面接まで、あと1週間。"]]},
+plan_result:{ch:"平日の夜",place:"金曜 23:30／自宅",lines:[
+  ()=>["",S.tmp],
+  ()=>S.work<=3&&!S.flags.suspect?["黒田課長","最近、レビューの返しが遅いな。何かあったか？","frown"]:null,
+  ()=>S.work<=3&&!S.flags.suspect?["","本業を削りすぎた。黒田さんは、何かに気づいている。"]:null,
+  ()=>S.stamina<=2?["","体が重い。このままだと、どこかで倒れる。"]:null],
+ enter:()=>{if(S.work<=3&&!S.flags.suspect){S.flags.suspect=1;add({conf:-1});}},
+ next:()=>S.planNext},
+
+parallel:{ch:"第6章　最終面接",place:"月曜 12:30／会社近くの公園",enter:()=>{if(!S.side&&S.apps>=2){const i=(S.company+1)%3;S.side={co:i,salary:Math.min(540,460+S.apps*10),status:"pending"};}},lines:[
+  ()=>!S.side?["","本命の最終面接は来週。併願している会社は、ほかに残っていない。"]:null,
+  ()=>S.side&&!S.flags.askedFast?["","昼休み、別のメールが届いた。夜に応募を続けていた会社からだ。"]:null,
+  ()=>S.side&&!S.flags.askedFast?["MAIL","内定のご連絡",CO[S.side.co]+" 採用担当",`選考の結果、内定となりましたのでご連絡いたします。\n提示年収：${S.side.salary}万円\n回答期限：今週金曜 17:00`]:null,
+  ()=>S.side&&!S.flags.askedFast?["",`本命の${co()}の最終面接は来週火曜。結果が出るのは、早くても再来週だ。`]:null,
+  ()=>S.flags.askedFast?["",`${co()}からは「日程は動かせません」と返ってきた。期限は、変わらず今週金曜だ。`]:null],
+ choices:[
+  {t:"本命に、最終面接を早めてもらえないか頼む",if:()=>S.side&&!S.flags.askedFast,run:()=>{if(Math.random()<.35+S.prep*.04){S.flags.fast=1;S.side.status="held";S.tmp=`${co()}が最終面接を今週木曜に早めてくれた。金曜の期限に、ぎりぎり間に合う。`;}else{S.flags.askedFast=1;S.tmp="";}},next:()=>S.flags.fast?"parallel_result":"parallel"},
+  {t:"内定を承諾して、本命の選考を辞退する",if:()=>S.side,run:()=>{S.flags.tookSide=1;S.company=S.side.co;S.salary=S.side.salary;S.tmp=`本命の最終面接を辞退した。安心と、少しの後悔が残った。${co()}で、年収${S.salary}万円。`;},next:"offer_result"},
+  {t:"本命に賭けて、内定を辞退する",if:()=>S.side,fx:{conf:1},run:()=>{S.side.status="declined";S.tmp="辞退の連絡を入れた。もう後戻りはできない。";},next:"parallel_result"},
+  {t:"回答期限を延ばしてもらえないか頼む",if:()=>S.side,run:()=>{if(Math.random()<.35+S.conf*.05){S.side.status="held";S.tmp="「再来週の水曜まで待ちます」と返ってきた。保険を持ったまま、最終面接に臨める。";}else{S.side.status="declined";S.tmp="「期限の延長は難しいです」と言われ、そのまま期限が過ぎた。";}},next:"parallel_result"},
+  {t:"最終面接に向けて準備する",if:()=>!S.side,next:"plan3"}]},
+parallel_result:{ch:"第6章　最終面接",place:"金曜 18:00／帰りの電車",lines:[()=>["",S.tmp]],next:()=>S.flags.fast?"final":"plan3"},
+
+nego:{ch:"第7章　内定",place:"金曜 21:00／自宅",nego:1,lines:[
+  ["","交渉する金額を決める。言いすぎれば印象が下がり、言わなければ一生そのままだ。"],
+  ()=>["",`提示は${S.salary}万円。エンジニアの提示年収の中央値は600万円台。`],
+  ()=>S.side&&S.side.status==="held"?["",`手元には、${CO[S.side.co]}の${S.side.salary}万円の内定がある。これは材料になる。`]:null,
+  ()=>route()==="draft"&&!S.flags.tookSide?["","ドラフトでは、ほかの会社も指名額を出していた。相場の根拠は示せる。"]:null]},
+
+final:{ch:"第6章　最終面接",place:()=>"翌週火曜 18:30／"+co()+" 社長室",lines:[
+  ()=>[[pres(),"うちは全社で、毎週KPIを見ています。売上も、解約率も、デプロイ頻度もです。"],[pres(),"うちは毎週水曜の夜に全社定例をやっていてね。社員旅行も、そろそろ再開しようと思っているんだ。"],[pres(),"うちは、全員が経営者のつもりで動いてほしいんです。指示を待つ人は、正直つらいと思う。"]][S.company%3],
+  ()=>[[pres(),"開発は、最近トランクベース開発に切り替えました。"],[pres(),"開発もね、最近トランクベース開発というのをやっているんですよ。"],[pres(),"開発は、トランクベースで毎日リリースしています。"]][S.company%3],
+  ["","30分間、社長はほとんど一人で話していた。"]],
+ choices:[
+  {t:"「トランクベースだと、テストはどう回していますか」と具体的に聞く",style:"num",run:()=>S.fs+=1.5+S.prep*.2+cult("num")*.6,next:"final2"},
+  {t:"うなずきながら聞き役に徹する",style:"team",run:()=>S.fs+=1.5+cult("team")*.6,next:"final2"},
+  {t:"「自分なら、こう変えます」と提案して割り込む",style:"self",fx:{conf:1},run:()=>S.fs+=1+cult("self")*.6,next:"final2"}]},
+
+final2:{ch:"第6章　最終面接",place:()=>"翌週火曜 19:05／"+co()+" 社長室",lines:[
+  [pres,"では最後に、何か質問はありますか。"]],
+ choices:[
+  {t:"「本番へのデプロイ頻度と、それを上げる取り組みを教えてください」",style:"num",check:()=>S.fs,pass:"offer",fail:"final_fail"},
+  {t:"「チームの皆さんは、どんなふうに助け合っていますか」",style:"team",check:()=>S.fs,pass:"offer",fail:"final_fail"},
+  {t:"「入社後の半年で、私に任せたいことは何でしょうか」",style:"self",check:()=>S.fs,pass:"offer",fail:"final_fail"},
+  {t:"「特にありません」",check:()=>S.fs-3,pass:"offer",fail:"final_fail"}]},
+
+final_fail:{ch:"第6章　最終面接",place:"5日後 22:10／自宅",enter:()=>{S.rejects++;add({stamina:-2,conf:-2,prep:1});},lines:[
+  OINORI,
+  ()=>memoLine(),
+  ["","最終まで行って、落ちた。社長は「二次面接」と言っていた気がするけれど、あれが最終だったらしい。"],
+  ["","選考のあいだ、年収の話は一度も出なかった。"]],
+ choices:[
+  {t:"保留していた内定を受ける",if:()=>S.side&&S.side.status==="held",run:()=>{S.company=S.side.co;S.salary=S.side.salary;S.flags.tookSide=1;S.tmp=`保留していた${co()}の内定を承諾した。保険が、本当に役に立った。`;},next:"offer_result"},
+  {t:"もう一度、別の会社に挑む",run:()=>{S.company++;S.flags.retry=1;},next:"interview1"},
+  {t:"しばらく活動を休む",next:"end_rest"}]},
+
+offer:{ch:"第7章　内定",place:"金曜 12:10／会社近くの公園",enter:()=>{add({conf:2});if(route()==="draft"&&S.company===0&&Math.random()<.5){S.salary+=20;S.flags.topup=1;}},lines:[
+  ["","昼休み、ベンチでスマホが震えた。"],
+  [contact,"おめでとうございます。内定です！"],
+  ()=>route()==="draft"&&S.company===0?[contact,S.flags.topup?`指名時の${S.salary-20}万円から評価を上乗せして、提示年収は${S.salary}万円です。`:`提示年収は、指名時と同じ${S.salary}万円です。`]:[contact,`提示年収は${S.salary}万円です。`],
+  ()=>["",`今の年収は${S.cur}万円。${S.salary-S.cur}万円のアップだ。`],
+  ()=>route()!=="draft"?["","思えば、最終面接まで誰も年収の話をしなかった。"]:null,
+  ()=>S.side&&S.side.status==="held"?["",`保留している${CO[S.side.co]}には、断りの連絡を入れなければならない。`]:null,
+  [contact,"来週水曜までにお返事をいただけますか。"]],
+ choices:[
+  {t:"その場で承諾する",run:()=>S.tmp="迷わず承諾した。電話を切ったあと、しばらく空を見ていた。",next:"offer_result"},
+  {t:"金額を決めて、年収の交渉をする",next:"nego"},
+  {t:"内定を辞退する",if:()=>S.flags.pushback||S.flags.axis==="people",next:"end_decline"},
+  {t:"他社の結果を待ちたいと、期限の延長を頼む",if:()=>!S.side||S.side.status!=="held",run:()=>{if(Math.random()<.5){S.tmp="1週間待ってもらえた。もう1社はお祈りだった。迷いなく決められた。";S.rejects++;}else{S.salary-=10;S.tmp="期限は延びなかった。条件の再提示では、手当が少し減っていた。";}},next:"offer_result"}]},
+
+offer_result:{ch:"第7章　内定",place:"翌週 21:00／自宅",lines:[
+  ()=>["",S.tmp],
+  ["","内定承諾書にサインをした。次は、いちばん気の重い仕事が残っている。"]],
+ next:"resign"},
+
+resign:{ch:"第8章　退職交渉",place:"月曜 08:45／小会議室",lines:[
+  ["","鞄の中には、退職届が入っている。"],
+  ["黒田課長","朝からどうした。話って何だ？"]],
+ choices:[
+  {t:"「実は、辞めたいと思っているのですが……」",run:()=>S.flags.soft=1,next:"resign2"},
+  {t:"「退職を決めましたので、ご報告です」",fx:{conf:1},next:"resign2"}]},
+
+resign2:{ch:"第8章　退職交渉",place:"月曜 17:30／部長室",lines:[
+  ()=>S.flags.soft?["黒田課長","そうか……。まあ待て、何が不満なんだ？ 話を聞かせてくれ。"]:["黒田課長","……そうか。決めたんだな。"],
+  ["黒田課長","君が抜けたら、あの決済システムは誰が見るんだ。来期は主任にする話も出ていたんだぞ。"],
+  ["","夕方、部長室に呼ばれた。"],
+  ["村井部長","給与は上げる。いくら提示されたんだ？"],
+  ()=>["",`${S.salary}万円と答えると、部長はしばらく黙った。`],
+  ()=>S.salary-S.cur>=100?["村井部長","……その金額は、うちでは出せないな。"]:["村井部長","それくらいなら、こちらも考えられる。"],
+  ()=>S.flags.lie?["村井部長","この前の歯医者も、面接だったんだろう。"]:null,
+  ()=>S.flags.suspect?["村井部長","最近仕事に身が入っていなかったのは、そういうことか。"]:null,
+  ()=>S.flags.soft?["","相談の形で切り出したせいか、引き止めの話はどんどん具体的になっていく。"]:null],
+ choices:[
+  {t:"昇進の話を受けて、残ることにする",next:"end_stay"},
+  {t:"引き継ぎ資料を用意し、退職日をはっきり伝える",if:()=>!S.flags.soft||S.conf>=4,next:"kuroda"},
+  {t:"一晩考えさせてもらう",if:()=>S.flags.soft&&S.conf<4,fx:{conf:2},next:"resign3"}]},
+
+resign3:{ch:"第8章　退職交渉",place:"火曜 08:30／小会議室",lines:[
+  ["","一晩考えた。主任の話がなぜ今になって出てきたのか、答えは明らかだった。"],
+  ["","退職届と、リリース手順の引き継ぎ資料を、黒田課長の前に置いた。"],
+  ["黒田課長","……わかった。最後まで頼むぞ。"]],
+ next:"kuroda"},
+
+kuroda:{ch:"第8章　退職交渉",place:"最終出社日 20:30／会社近くの居酒屋",lines:[
+  ["","最終出社日の夜、黒田さんに誘われて二人で飲んだ。"],
+  ["黒田課長","俺もな、30のときに一度、内定をもらったことがある。","neutral"],
+  ["黒田課長","迷って、残った。家のローンもあったし、子どもも生まれたばかりだった。","neutral"],
+  ["黒田課長","後悔してるかって？ ……わからん。わからんから、お前には行けって言うんだ。","neutral"],
+  ["","黒田さんは、ジョッキの残りを一気に飲んだ。"],
+  ["黒田課長","引き継ぎの手順書、よく書けてた。読めるように書いてあった。","smile"],
+  ["","入社1年目に言われた言葉を、黒田さんは覚えていないようだった。それでいいと思った。"]],
+ next:"end_new"},
+
+end_new:{place:"4月1日 09:30／新しい職場",end:{title:"新しい名刺",stamp:"内定",text:()=>[
+  "初日、Slackに招待され、開発環境の構築手順を渡された。READMEは、ちゃんと最新だった。",
+  {money:`年収は${S.cur}万円から${S.salary}万円になった。その数字で何が変わるのかは、これから確かめる。`,tech:"初めて出したプルリクエストに、12件のコメントがついた。どれも、知らなかったことだった。",people:"昼休み、ランチに誘ってくれたのは、面接でいちばん厳しかった人だった。"}[S.flags.axis||"money"],
+  S.flags.mom?"前の晩、実家に電話した。父は「そうか」と言い、母は「体だけは気をつけて」と言った。":null,
+  S.flags.noguchi?"野口からLINEが届いた。「がんばれよ。俺もハイヤーフェス登録してみたわ」":"前の職場の送別会では、思っていたより多くの人が来てくれた。",
+  S.flags.pushback===undefined?`隣の席は、あの${tl().slice(7)}だった。`+"話してみると、レビューは厳しいが的確だった。":"入ってみると、聞いていた話と違うところもある。それでも、選んだのは自分だ。"]}},
+
+end_stay:{place:"半年後 22:30／自席",end:{title:"据え置き",text:()=>[
+  "主任の話は「来期の評価次第」に変わった。昇給は、今年も月4,000円だった。",
+  S.flags.axis==="money"?`提示された${S.salary}万円という数字を、ときどき思い出す。`:S.flags.axis==="tech"?"使っているJavaのバージョンは、今も8のままだ。":"黒田さんは、あの日から少しだけ優しくなった。それが救いなのかどうかは、わからない。",
+  "夜のフロアに、障害のアラートが鳴り響く。",
+  "転職サイトの通知を、もう一度オンにした。"]}},
+
+end_decline:{place:"金曜 12:40／会社近くの公園",end:{title:"見送り",text:()=>[
+  `内定を辞退すると伝えると、${route()==="agent"?"森下さん":"採用担当の片桐さん"}は少しだけ黙った。`,
+  `決め手は、技術面接の${tl().slice(7)}だった。面接官の態度は、そのまま会社の文化なのだと思う。`,
+  "お祈りする側に回ったのは、初めてだった。",
+  "選考を進めている会社は、まだほかにもある。軸は、もうぶれていない。"]}},
+
+end_rest:{place:"日曜 15:00／近所の喫茶店",end:{title:"小休止",text:()=>[
+  "転職サイトの通知を切った。久しぶりに、何も予定のない週末を過ごしている。",
+  "お祈りメールは増えたが、書き直したレジュメと面接のメモは手元に残った。",
+  "また始めたくなったら、そのときに始めればいい。"]}},
+};
+
+const $=id=>document.getElementById(id);
+// ===== 絵：登場人物の顔と、場所ごとの背景（すべてSVGで描く） =====
+const SKIN="#f1d2b6",SKIN2="#e6bf9f";
+const CH={
+ "佐伯":{hair:"short",hc:"#2a2a2e",body:"tee",bc:"#4f74a8",ex:"smile"},
+ "森下":{hair:"bob",hc:"#6b4428",body:"jacket",bc:"#3d4b66",ex:"smile",fem:1},
+ "小野寺":{hair:"side",hc:"#232327",body:"cardigan",bc:"#76866a",ex:"neutral",glasses:1},
+ "黒田":{hair:"recede",hc:"#38383c",body:"tie",bc:"#59606b",ex:"frown",age:1},
+ "野口":{hair:"messy",hc:"#5a3a22",body:"hoodie",bc:"#c4613f",ex:"curious"},
+ "川島":{hair:"pony",hc:"#1f1f24",body:"jacket",bc:"#2f3540",ex:"smile",fem:1},
+ "郷田":{hair:"short",hc:"#1c1c1f",body:"tee",bc:"#2a2a2e",ex:"smug",beard:1},
+ "真壁":{hair:"side",hc:"#3b2a1e",body:"tee",bc:"#3d5a73",ex:"smug",glasses:1},
+ "湊":{hair:"recede",hc:"#7a7a7e",body:"tie",bc:"#2c3a2c",ex:"laugh",age:1},
+ "青井":{hair:"messy",hc:"#2b2b2b",body:"hoodie",bc:"#2a5fae",ex:"smile"},
+ "東":{hair:"messy",hc:"#262629",body:"hoodie",bc:"#4b4b52",ex:"smug",beard:1},
+ "堂本":{hair:"side",hc:"#a3a3a6",body:"tie",bc:"#26324a",ex:"laugh",age:1},
+ "村井":{hair:"recede",hc:"#9b9ba0",body:"tie",bc:"#3a3a40",ex:"frown",glasses:1,age:1},
+ "母":{hair:"bob",hc:"#8d8a88",body:"cardigan",bc:"#b07a8a",ex:"worried",fem:1,age:1},
+ "片桐":{hair:"bob",hc:"#1f1f24",body:"jacket",bc:"#4a3f5c",ex:"smile",fem:1},
+};
+const charKey=name=>Object.keys(CH).find(k=>String(name).includes(k));
+const HAIR_BACK={
+ bob:c=>`<path d="M44 150 Q34 44 100 38 Q166 44 156 150 Z" fill="${c}"/>`,
+ pony:c=>`<path d="M150 70 Q182 90 168 150 Q160 120 146 100 Z" fill="${c}"/>`,
+};
+const HAIR={
+ short:c=>`<path d="M50 100 Q44 40 100 36 Q156 40 150 100 Q146 70 128 64 Q100 74 72 64 Q54 72 50 100 Z" fill="${c}"/>`,
+ side:c=>`<path d="M50 104 Q42 42 100 36 Q160 40 151 102 Q148 74 136 66 Q104 78 66 62 Q54 76 50 104 Z" fill="${c}"/><path d="M66 62 Q96 52 136 66" stroke="${c}" stroke-width="6" fill="none"/>`,
+ bob:c=>`<path d="M50 112 Q44 42 100 38 Q156 42 150 112 Q146 72 118 64 Q92 82 64 70 Q54 84 50 112 Z" fill="${c}"/>`,
+ pony:c=>`<path d="M50 104 Q46 42 100 38 Q154 42 150 104 Q146 70 100 62 Q60 66 50 104 Z" fill="${c}"/>`,
+ recede:c=>`<path d="M52 110 Q50 70 62 60 L66 96 Z M148 110 Q150 70 138 60 L134 96 Z" fill="${c}"/><path d="M70 56 Q100 46 130 56" stroke="${c}" stroke-width="4" fill="none" opacity=".7"/>`,
+ messy:c=>`<path d="M48 104 Q40 50 70 40 L74 30 L88 40 L98 26 L110 40 L124 30 L130 44 Q160 52 152 104 Q146 72 130 66 L120 76 L108 64 L94 78 L82 64 L68 74 Q54 80 48 104 Z" fill="${c}"/>`,
+};
+const BODY={
+ tee:c=>`<path d="M22 230 Q26 170 100 162 Q174 170 178 230 Z" fill="${c}"/><path d="M82 163 Q100 178 118 163" stroke="#0003" stroke-width="3" fill="none"/>`,
+ hoodie:c=>`<path d="M20 230 Q24 168 100 160 Q176 168 180 230 Z" fill="${c}"/><path d="M70 164 Q100 196 130 164" stroke="#0003" stroke-width="5" fill="none"/><path d="M92 182 L90 206 M108 182 L110 206" stroke="#fff8" stroke-width="2.5"/>`,
+ cardigan:c=>`<path d="M22 230 Q26 170 100 162 Q174 170 178 230 Z" fill="${c}"/><path d="M84 163 L100 230 L116 163 Z" fill="#eceae4"/>`,
+ jacket:c=>`<path d="M22 230 Q26 170 100 162 Q174 170 178 230 Z" fill="${c}"/><path d="M84 163 L100 200 L116 163 Z" fill="#f4f4f2"/><path d="M84 163 L96 212 M116 163 L104 212" stroke="#0004" stroke-width="2"/>`,
+ tie:c=>`<path d="M22 230 Q26 170 100 162 Q174 170 178 230 Z" fill="${c}"/><path d="M82 163 L100 196 L118 163 Z" fill="#f4f4f2"/><path d="M96 172 L104 172 L107 214 L100 222 L93 214 Z" fill="#8a2f3a"/>`,
+};
+function eyes(ex){
+  const L=82,R=118,Y=106;
+  if(ex==="smile"||ex==="laugh") return `<path d="M${L-7} ${Y+2} Q${L} ${Y-6} ${L+7} ${Y+2} M${R-7} ${Y+2} Q${R} ${Y-6} ${R+7} ${Y+2}" stroke="#2a2220" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  if(ex==="smug") return `<ellipse cx="${L}" cy="${Y+1}" rx="4" ry="3" fill="#2a2220"/><ellipse cx="${R}" cy="${Y+1}" rx="4" ry="3" fill="#2a2220"/><path d="M${L-8} ${Y-2} L${L+8} ${Y-2} M${R-8} ${Y-2} L${R+8} ${Y-2}" stroke="#2a2220" stroke-width="3" stroke-linecap="round"/>`;
+  return `<ellipse cx="${L}" cy="${Y}" rx="4.5" ry="5.5" fill="#2a2220"/><ellipse cx="${R}" cy="${Y}" rx="4.5" ry="5.5" fill="#2a2220"/><circle cx="${L+1.5}" cy="${Y-2}" r="1.4" fill="#fff"/><circle cx="${R+1.5}" cy="${Y-2}" r="1.4" fill="#fff"/>`;
+}
+function brows(ex,c){
+  const m={frown:"M72 92 L90 97 M128 92 L110 97",smug:"M72 90 L90 88 M110 86 L128 90",curious:"M72 92 Q81 86 90 92 M110 86 Q119 82 128 88",worried:"M72 96 L90 91 M110 91 L128 96"}[ex]||"M73 93 Q81 89 89 93 M111 93 Q119 89 127 93";
+  return `<path d="${m}" stroke="${c}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+}
+function mouth(ex){
+  return {smile:`<path d="M88 132 Q100 142 112 132" stroke="#8a3b34" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+   laugh:`<path d="M86 128 Q100 150 114 128 Z" fill="#8a3b34"/>`,
+   frown:`<path d="M89 138 Q100 130 111 138" stroke="#8a3b34" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+   smug:`<path d="M90 134 Q104 138 113 128" stroke="#8a3b34" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+   curious:`<ellipse cx="100" cy="134" rx="4" ry="5" fill="#8a3b34"/>`,
+   worried:`<path d="M90 136 Q95 132 100 136 Q105 140 110 136" stroke="#8a3b34" stroke-width="3" fill="none"/>`}[ex]||`<path d="M91 134 L109 134" stroke="#8a3b34" stroke-width="3" stroke-linecap="round"/>`;
+}
+const faceCache={};
+function face(key,ex){
+  const c=CH[key];if(!c) return "";
+  ex=ex||c.ex;const id=key+ex;if(faceCache[id]) return faceCache[id];
+  const s=`<svg viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+   ${(HAIR_BACK[c.hair]||(()=>""))(c.hc)}
+   ${BODY[c.body](c.bc)}
+   <rect x="86" y="140" width="28" height="28" fill="${SKIN2}"/>
+   <ellipse cx="52" cy="108" rx="8" ry="11" fill="${SKIN2}"/><ellipse cx="148" cy="108" rx="8" ry="11" fill="${SKIN2}"/>
+   <ellipse cx="100" cy="104" rx="49" ry="${c.fem?52:56}" fill="${SKIN}"/>
+   ${c.beard?`<path d="M58 118 Q62 160 100 162 Q138 160 142 118 Q132 146 100 148 Q68 146 58 118 Z" fill="${c.hc}" opacity=".85"/>`:""}
+   ${c.age?`<path d="M74 80 Q100 76 126 80" stroke="#c9a487" stroke-width="2" fill="none"/>`:""}
+   ${brows(ex,c.hc)}${eyes(ex)}
+   <path d="M100 112 L97 124 L103 124" stroke="${SKIN2}" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+   ${ex==="smile"||ex==="laugh"?`<ellipse cx="74" cy="122" rx="7" ry="4" fill="#e89a8a" opacity=".45"/><ellipse cx="126" cy="122" rx="7" ry="4" fill="#e89a8a" opacity=".45"/>`:""}
+   ${mouth(ex)}
+   ${HAIR[c.hair](c.hc)}
+   ${c.glasses?`<g stroke="#2a2a2e" stroke-width="2.5" fill="#ffffff22"><rect x="68" y="96" width="27" height="20" rx="6"/><rect x="105" y="96" width="27" height="20" rx="6"/><path d="M95 104 L105 104" fill="none"/></g>`:""}
+  </svg>`;
+  return faceCache[id]=s;
+}
+
+// 背景。場所の文字から種類を決め、時刻から夜かどうかを決める
+function sceneKind(place){
+  const p=String(place);
+  if(/オンライン/.test(p)) return "online";
+  if(/電車/.test(p)) return "train";
+  if(/タクシー|公園/.test(p)) return "park";
+  if(/居酒屋/.test(p)) return "cafe";
+  if(/公園/.test(p)) return "park";
+  if(/社長室|部長室/.test(p)) return "exec";
+  if(/会議室/.test(p)) return "meeting";
+  if(/食堂|喫茶/.test(p)) return "cafe";
+  if(/新しい職場/.test(p)) return "lobby";
+  if(/休憩/.test(p)) return "cafe";
+  if(/自宅/.test(p)) return "home";
+  return "office";
+}
+function isNight(place){const m=String(place).match(/(\d{1,2}):\d{2}/);if(!m) return false;const h=+m[1];return h>=19||h<6;}
+function bg(kind,night){
+  if(kind==="park"&&night) kind="parknight";
+  const sky=night?"#1d2840":"#a9cbe8",sky2=night?"#2c3a5a":"#d8e8f4";
+  const city=night?Array.from({length:22},(_,i)=>`<rect x="${(i*37)%300+8}" y="${40+(i*23)%60}" width="4" height="5" fill="#ffd77a" opacity=".85"/>`).join(""):"";
+  const win=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#sky)"/><g clip-path="inset(0)">${night?`<g transform="translate(${x},${y}) scale(${w/320},${h/200})"><path d="M0 200 L0 120 L30 120 L30 90 L60 90 L60 130 L90 130 L90 70 L130 70 L130 110 L170 110 L170 60 L210 60 L210 120 L250 120 L250 85 L290 85 L290 130 L320 130 L320 200 Z" fill="#141b2c"/>${city}</g>`:`<g transform="translate(${x},${y}) scale(${w/320},${h/200})"><path d="M0 200 L0 140 L40 140 L40 110 L80 110 L80 150 L120 150 L120 95 L160 95 L160 135 L200 135 L200 90 L240 90 L240 140 L280 140 L280 120 L320 120 L320 200 Z" fill="#c3d3e2"/></g>`}</g><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#8a8f99" stroke-width="3"/>`;
+  const defs=`<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky}"/><stop offset="1" stop-color="${sky2}"/></linearGradient></defs>`;
+  const S={
+   office:`<rect width="320" height="200" fill="${night?"#3a404c":"#dfe3e8"}"/>${win(20,18,280,80)}<rect y="120" width="320" height="80" fill="${night?"#2b2f38":"#c7ccd3"}"/>
+     <rect x="10" y="118" width="300" height="8" fill="${night?"#4a505c":"#b5bcc6"}"/>${[30,120,210].map(x=>`<rect x="${x}" y="92" width="58" height="26" rx="2" fill="#20242c"/><rect x="${x+3}" y="95" width="52" height="20" fill="${night?"#5d8fd6":"#9cc0ea"}" opacity="${x===120?1:.35}"/>`).join("")}
+     ${night?`<rect width="320" height="200" fill="#0b1530" opacity=".25"/>`:""}`,
+   home:`<rect width="320" height="200" fill="${night?"#4a4250":"#efe6da"}"/>${win(190,24,100,80)}<rect x="186" y="20" width="18" height="90" fill="${night?"#6a4f5c":"#d79c86"}"/>
+     <rect x="20" y="30" width="70" height="110" fill="${night?"#5a4a3e":"#b88b62"}"/>${[46,76,106].map(y=>`<rect x="24" y="${y}" width="62" height="4" fill="#0002"/>`).join("")}${[28,36,44,52,62,70].map((x,i)=>`<rect x="${x}" y="${34+(i%2)*4}" width="6" height="${12-(i%2)*4}" fill="${["#c0563f","#3e6aa8","#e2b44c","#5b8f5d","#7a5aa6","#c0563f"][i]}"/>`).join("")}
+     <rect y="150" width="320" height="50" fill="${night?"#3b3340":"#d8c9b4"}"/><rect x="110" y="128" width="140" height="10" fill="${night?"#6b5646":"#a77a52"}"/><rect x="150" y="104" width="54" height="24" rx="2" fill="#2b2d33"/><rect x="153" y="107" width="48" height="18" fill="${night?"#7fb0ff":"#c7dcf5"}"/>
+     ${night?`<rect width="320" height="200" fill="#0b1030" opacity=".22"/>`:""}`,
+   train:`<rect width="320" height="200" fill="#d9dde2"/>${[10,115,220].map(x=>win(x,30,90,60)).join("")}<rect y="20" width="320" height="6" fill="#9aa2ad"/>${[40,90,150,200,260].map(x=>`<path d="M${x} 20 L${x} 40" stroke="#888" stroke-width="2"/><circle cx="${x}" cy="46" r="7" fill="none" stroke="#666" stroke-width="3"/>`).join("")}
+     <rect y="120" width="320" height="34" fill="#4f7b5e"/><rect y="154" width="320" height="46" fill="#8e8e86"/>`,
+   park:`<rect width="320" height="200" fill="url(#sky)"/><circle cx="270" cy="40" r="18" fill="#fff4c2"/><rect y="130" width="320" height="70" fill="#8cbf7a"/>
+     ${[40,110,250].map(x=>`<rect x="${x-5}" y="80" width="10" height="55" fill="#7a5a3a"/><circle cx="${x}" cy="72" r="30" fill="#5f9e5a"/>`).join("")}<rect x="150" y="140" width="80" height="8" fill="#9b6b3e"/><rect x="156" y="148" width="5" height="16" fill="#555"/><rect x="219" y="148" width="5" height="16" fill="#555"/>`,
+   parknight:`<rect width="320" height="200" fill="#1b2236"/>${city}<rect y="130" width="320" height="70" fill="#2a2e38"/>${[60,250].map(x=>`<rect x="${x-2}" y="60" width="4" height="80" fill="#555"/><circle cx="${x}" cy="58" r="7" fill="#ffe9a8"/><circle cx="${x}" cy="58" r="22" fill="#ffe9a8" opacity=".15"/>`).join("")}<rect x="130" y="110" width="70" height="26" rx="4" fill="#d9b84a"/><rect x="140" y="100" width="46" height="14" rx="3" fill="#d9b84a"/>`,
+   meeting:`<rect width="320" height="200" fill="#e7e9ec"/><rect x="40" y="24" width="150" height="80" fill="#fafafa" stroke="#9aa0a8" stroke-width="3"/><path d="M56 44 L120 44 M56 60 L160 60 M56 76 L100 76" stroke="#5d7fb8" stroke-width="3"/>
+     ${win(220,24,80,80)}<rect y="140" width="320" height="60" fill="#b9bec6"/><rect x="0" y="132" width="320" height="14" fill="#7a6a58"/>`,
+   exec:`<rect width="320" height="200" fill="#6b4e36"/>${[0,40,80,120,160,200,240,280].map(x=>`<rect x="${x}" y="0" width="2" height="130" fill="#0002"/>`).join("")}${win(170,20,130,90)}
+     <rect x="20" y="24" width="120" height="100" fill="#4a3424"/>${[50,80,110].map(y=>`<rect x="24" y="${y}" width="112" height="4" fill="#0003"/>`).join("")}<rect y="138" width="320" height="62" fill="#3e2b1e"/><rect y="130" width="320" height="12" fill="#2a1d14"/>`,
+   cafe:`<rect width="320" height="200" fill="${night?"#4d3b2e":"#f1e2cc"}"/>${win(200,20,100,70)}<rect x="20" y="40" width="150" height="16" fill="#9b6b3e"/>${[30,70,110,150].map(x=>`<circle cx="${x}" cy="34" r="6" fill="#ffd27a"/>`).join("")}
+     <rect y="130" width="320" height="70" fill="${night?"#3a2c22":"#c9a77e"}"/>${[60,200].map(x=>`<ellipse cx="${x}" cy="132" rx="46" ry="8" fill="#7a5233"/>`).join("")}`,
+   lobby:`<rect width="320" height="200" fill="#f2f4f6"/><rect x="90" y="20" width="140" height="120" fill="#cfe2f0" stroke="#9aa6b2" stroke-width="3"/><path d="M160 20 L160 140" stroke="#9aa6b2" stroke-width="3"/>
+     <text x="160" y="16" text-anchor="middle" font-size="11" fill="#2a5fae" font-family="sans-serif" font-weight="700">WELCOME</text>${[40,280].map(x=>`<rect x="${x-10}" y="110" width="20" height="30" fill="#c7b299"/><circle cx="${x}" cy="100" r="18" fill="#5f9e5a"/>`).join("")}<rect y="140" width="320" height="60" fill="#d9dde2"/>`,
+   online:`<rect width="320" height="200" fill="#1e2128"/><rect x="0" y="176" width="320" height="24" fill="#15171c"/>${[130,160,190].map((x,i)=>`<circle cx="${x}" cy="188" r="8" fill="${i===2?"#d9534f":"#3a3f4a"}"/>`).join("")}
+     <rect x="234" y="120" width="76" height="50" rx="4" fill="#3a3f4a"/><text x="240" y="164" font-size="8" fill="#fff" font-family="sans-serif">あなた</text><circle cx="272" cy="140" r="11" fill="#c9b3a0"/><path d="M256 170 Q272 150 288 170 Z" fill="#6a7d96"/>`,
+  };
+  return `<svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${defs}${S[kind]}</svg>`;
+}
+let stageKind="";
+function setScene(place){
+  stageKind=sceneKind(place);
+  $("bg").innerHTML=bg(stageKind,isNight(place));
+  $("stage").className="stage "+stageKind;
+  showChara(null);
+}
+function showChara(l){
+  const key=l&&!["MAIL","LINE","JOB","CODE","MEMO",""].includes(val(l[0]))?charKey(val(l[0])):(l&&l[0]==="LINE"?charKey(l[1]):null);
+  const el=$("chara");
+  if(!key){el.classList.add("off");$("plate").hidden=true;return;}
+  const html=face(key,l[2]);
+  if(el.dataset.k!==key+(l[2]||"")){el.innerHTML=html;el.dataset.k=key+(l[2]||"");}
+  el.classList.remove("off");
+  $("plate").hidden=false;$("plate").textContent=l[0]==="LINE"?l[1]+"（LINE）":val(l[0]);
+}
+
+const clamp=v=>Math.max(0,Math.min(10,v));
+function add(fx){for(const k in fx)S[k]=clamp(S[k]+fx[k]);}
+const val=v=>typeof v==="function"?v():v;
+function prob(c,feel){const b=val(c.check)+(feel?0:cult(c.style));return Math.max(.08,Math.min(.93,.08+b*.09+S.prep*.04+S.conf*.03));}
+function memoLine(){
+  const i=S.company%3,best=bestStyle(i);
+  if(!S.unlock) return ["","不採用の理由は、どこにも書かれていない。"];
+  S.notes.cult[i]=best;
+  const ch=S.last&&S.last.style;
+  const why={num:"成果を数字で語れていない。当社は定量で判断する文化。",team:"協調性に不安。チームで動く当社の文化に合うか疑問。",self:"指示待ちの印象。自分で課題を見つけて動けるかが不明。"}[best];
+  return ["MEMO",CO[i],ch===best?"評価：C\n答え方の方向性は良い。ただし準備が足りず、具体性に欠ける。":`評価：C\n${why}`];
+}
+function choiceMemo(c){
+  if(c.memo) return val(c.memo);
+  if(c.style&&S.notes.cult[S.company%3]===c.style) return "メモ：この会社に響く";
+  return "";
+}
+
+function stats(){
+  $("stats").innerHTML=[["体力","stamina"],["自信","conf"],["準備","prep"],["本業","work"]].map(([n,k])=>
+   `<span class="stat ${S[k]<=2.5?"low":""}">${n}<span class="bar"><i style="width:${S[k]*10}%"></i></span></span>`).join("");
+}
+let cur,lines,li;
+function go(id){
+  const sc=SC[id];
+  save(sc.end?null:id);
+  if(sc.enter) sc.enter();
+  if(S.stamina<=0&&!sc.end) return go("end_rest");
+  cur=sc;li=0;
+  lines=sc.lines?sc.lines.map(l=>typeof l==="function"?l():l).filter(Boolean):[];
+  $("chapter").textContent=sc.end?"エンディング":sc.ch;
+  $("place").textContent=val(sc.place);
+  setScene(val(sc.place));
+  $("story").innerHTML="";$("controls").innerHTML="";
+  stats();
+  if(sc.end) return ending(sc.end,id);
+  step();
+}
+function lineEl(l){
+  const esc=s=>String(val(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])).replace(/\n/g,"<br>");
+  const d=document.createElement("div");
+  if(l[0]==="MEMO"){d.className="memo";d.innerHTML=`<span class="memo-head">面接官の評価メモ（${esc(l[1])}・社外秘）</span>${esc(l[2])}`;}
+  else if(l[0]==="CODE"){d.className="code";d.innerHTML=`<span class="code-lang">${esc(l[1])}</span><ol>${String(l[2]).split("\n").map(x=>`<li>${x.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))||" "}</li>`).join("")}</ol>`;}
+  else if(l[0]==="JOB"){const j=l[1];d.className="job";d.innerHTML=`<div class="job-head"><span class="job-tag">求人票</span><span class="job-co">${esc(j.co)}</span></div><div class="job-title">${esc(j.title)}</div><div class="job-pay"><span>想定年収</span><b>${esc(j.pay)}</b></div><dl>${j.rows.map(r=>`<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl><p class="job-note">${esc(j.note)}</p>`;}
+  else if(l[0]==="MAIL"){d.className="mail";d.innerHTML=`<span class="from">差出人：${esc(l[2])}</span><span class="subj">${esc(l[1])}</span>${esc(l[3])}`;}
+  else if(l[0]==="LINE"){d.className="chat";d.innerHTML=`<span class="who">${esc(l[1])}</span>${esc(l[2])}`;}
+  else if(!val(l[0])){d.className="ln narr";d.innerHTML=esc(l[1]);}
+  else{const k=charKey(val(l[0]));d.className="ln say";d.innerHTML=`<span class="who">${k?`<span class="av">${face(k,l[2]).replace('viewBox="0 0 200 230"','viewBox="45 45 110 110"')}</span>`:""}${esc(l[0])}</span>「${esc(l[1])}」`;}
+  return d;
+}
+function step(){
+  if(li<lines.length){
+    const ln=lines[li++];$("story").appendChild(lineEl(ln));
+    if(ln[0]==="LINE"||(val(ln[0])&&!["MAIL","JOB","CODE","MEMO"].includes(ln[0]))) showChara(ln);
+    while($("story").children.length>4) $("story").firstChild.remove();
+    $("controls").innerHTML=li<lines.length||cur.choices||cur.next?`<div style="display:flex;justify-content:flex-end"><button class="next" id="adv">▼ 次へ</button></div>`:"";
+    if($("adv")){$("adv").onclick=e=>{e.stopPropagation();step();};}
+    if(li<lines.length) return;
+  }
+  if(cur.plan) return showPlanner(cur.plan);
+  if(cur.nego) return showNego();
+  if(cur.choices) return showChoices();
+  if(cur.next){$("controls").innerHTML=`<button class="primary" id="adv">次の場面へ</button>`;$("adv").onclick=e=>{e.stopPropagation();go(val(cur.next));};}
+}
+function showChoices(){
+  const cs=cur.choices.filter(c=>!c.if||c.if());
+  $("controls").innerHTML=`<div class="choices">${cs.map((c,i)=>`<button class="choice" data-i="${i}"><span>${val(c.t)}${choiceMemo(c)?`<em class="memo-tag">${choiceMemo(c)}</em>`:""}</span>${c.check!=null?`<small>手応え ${Math.round(prob(c,1)*100)}%</small>`:""}</button>`).join("")}</div>`;
+  $("controls").querySelectorAll(".choice").forEach(b=>b.onclick=e=>{
+    e.stopPropagation();const c=cs[+b.dataset.i];
+    if(c.fx) add(c.fx);
+    if(c.run) c.run();
+    if(c.check!=null) S.last={style:c.style||null};
+    const next=c.check!=null?(Math.random()<prob(c)?c.pass:c.fail):val(c.next);
+    go(next);
+  });
+  $("controls").querySelector(".choice").focus({preventScroll:true});
+}
+// 平日の夜の割り振り
+const ACTS=[["prep","面接対策"],["apply","応募"],["work","本業"],["rest","休む"]];
+function showPlanner(pl){
+  const days=["月","火","水","木","金"];
+  const pick=S.lastPlan||["prep","work","apply","work","rest"];
+  $("controls").innerHTML=`<div class="planner"><div class="plan-head">第${pl.week}週　平日の夜</div>${days.map((d,i)=>`<div class="plan-row"><span class="plan-day">${d}</span><div class="seg">${ACTS.map(([k,n])=>`<button class="seg-b${pick[i]===k?" on":""}" data-d="${i}" data-k="${k}" aria-pressed="${pick[i]===k}">${n}</button>`).join("")}</div></div>`).join("")}
+   <p class="plan-note">面接対策：準備が上がる ／ 応募：併願先が増える ／ 本業：職場の評価を保つ ／ 休む：体力が戻る</p>
+   <button class="primary" id="adv">この予定で1週間すごす</button></div>`;
+  $("controls").querySelectorAll(".seg-b").forEach(b=>b.onclick=e=>{e.stopPropagation();pick[+b.dataset.d]=b.dataset.k;
+    b.parentNode.querySelectorAll(".seg-b").forEach(x=>{x.classList.toggle("on",x===b);x.setAttribute("aria-pressed",x===b);});});
+  $("adv").onclick=e=>{e.stopPropagation();
+    const n=k=>pick.filter(x=>x===k).length;
+    const before={prep:S.prep,stamina:S.stamina,work:S.work};
+    add({prep:n("prep")*.6,stamina:n("rest")*1.1-1.6-n("prep")*.2,work:n("work")*.8-1.6});S.apps+=n("apply");
+    S.lastPlan=pick.slice();
+    const d=k=>{const v=Math.round((S[k]-before[k])*10)/10;return (v>=0?"+":"")+v;};
+    S.tmp=`1週間が終わった。準備 ${d("prep")}、体力 ${d("stamina")}、本業 ${d("work")}。応募した会社は、合計${S.apps}社になった。`;
+    S.planNext=pl.next;go("plan_result");};
+}
+// 年収交渉
+function showNego(){
+  const base=S.salary;let ask=base+30;
+  const draw=()=>{$("ask").textContent=ask;$("diff").textContent=(ask-base>=0?"+":"")+(ask-base)+"万円";};
+  $("controls").innerHTML=`<div class="nego"><div class="nego-row"><button class="seg-b" id="m10" aria-label="10万円下げる">−10</button><span class="nego-val"><b id="ask"></b>万円</span><button class="seg-b" id="p10" aria-label="10万円上げる">＋10</button></div><p class="plan-note">提示額との差：<span id="diff"></span></p><button class="primary" id="adv">この金額で伝える</button></div>`;
+  draw();
+  $("m10").onclick=e=>{e.stopPropagation();ask=Math.max(base,ask-10);draw();};
+  $("p10").onclick=e=>{e.stopPropagation();ask=Math.min(base+200,ask+10);draw();};
+  $("adv").onclick=e=>{e.stopPropagation();
+    const d=ask-base,held=S.side&&S.side.status==="held";
+    const limit=15+S.prep*4+S.conf*2+(held?Math.max(0,S.side.salary-base)+20:0)+(route()==="draft"&&!S.flags.tookSide?15:0);
+    if(d<=0) S.tmp="結局、提示額のままでお願いした。";
+    else if(d<=limit){S.salary=ask;S.tmp=`数日後、「${ask}万円でお受けします」と返ってきた。言ってみるものだ。`;add({conf:1});}
+    else if(d<=limit+50){const mid=base+Math.round(limit/20)*10;S.salary=Math.max(base,mid);S.tmp=S.salary>base?`「${ask}万円は難しいですが、${S.salary}万円なら」と返ってきた。落としどころとしては悪くない。`:"「今回は規定どおりで」と返ってきた。少し強気すぎたかもしれない。";}
+    else {S.salary=base-10;add({conf:-2});S.tmp=`「その金額は、今回のポジションでは難しいです」。条件の再提示では、手当が少し減って${S.salary}万円になった。`;}
+    go("offer_result");};
+}
+
+function ending(e,id){
+  const t=e.text();
+  const got=markEnding(id);S.notes.runs=(S.notes.runs||0)+1;store("naitei-notes",S.notes);
+  const won=!!e.stamp;
+  $("story").innerHTML=`<div class="ending">${won?`<div class="stamp">${e.stamp}</div>`:""}<span class="place">END</span><h2>${e.title}</h2>${t.filter(Boolean).map(x=>`<p class="ln">${x}</p>`).join("")}
+   <dl>${won?`<dt>入社先</dt><dd>${co()}</dd>`:""}${won?`<dt>年収の変化</dt><dd>${S.cur}万円 → ${S.salary}万円</dd>`:""}<dt>お祈りメール</dt><dd>${S.rejects}通</dd></dl><span class="place">エンディング回収 ${got.length} / ${ENDS.length}</span>${S.unlock?"":`<p class="plan-note">2周目からは、不採用のときに面接官の評価メモが読めます。メモで知った社風は、選択肢に表示されます。</p>`}<ul class="gallery">${ENDS.map(([k,n])=>`<li class="${got.includes(k)?"got":""}">${got.includes(k)?n:"？？？"}</li>`).join("")}</ul></div>`;
+  $("controls").innerHTML=`<button class="primary" id="again">はじめから遊ぶ</button>`;
+  $("again").onclick=e2=>{e2.stopPropagation();reset();};
+}
+function reset(){S=JSON.parse(JSON.stringify(START));const nt=store("naitei-notes");if(nt){S.notes=nt;S.notes.cult=S.notes.cult||{};S.notes.code=S.notes.code||{};}S.unlock=(store("naitei-endings")||[]).length>0?1:0;if(S.notes.runs) add({prep:1});go("start");}
+const ENDS=[["end_new","新しい名刺"],["end_stay","据え置き"],["end_decline","見送り"],["end_rest","小休止"]];
+function store(k,v){try{if(v===undefined) return JSON.parse(localStorage.getItem(k)||"null");if(v===null) localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
+function save(id){store("naitei-save",id?{id,S}:null);}
+function markEnding(id){const g=store("naitei-endings")||[];if(!g.includes(id)) g.push(id);store("naitei-endings",g);return g;}
+function boot(){
+  const sv=store("naitei-save");
+  if(!sv||!SC[sv.id]) return reset();
+  S=Object.assign(JSON.parse(JSON.stringify(START)),sv.S);
+  $("chapter").textContent="つづきから";$("place").textContent="";setScene("自宅");
+  $("story").innerHTML=`<p class="ln narr">前回の続きがあります。（${SC[sv.id].ch}）</p>`;
+  $("controls").innerHTML=`<div class="resume"><button class="primary" id="cont">続きから遊ぶ</button><button class="choice" id="fresh"><span>はじめから遊ぶ</span></button></div>`;
+  $("cont").onclick=e=>{e.stopPropagation();go(sv.id);};
+  $("fresh").onclick=e=>{e.stopPropagation();reset();};
+}
+$("page").addEventListener("click",()=>{if($("adv")&&$("adv").classList.contains("next"))step();});
+document.addEventListener("keydown",e=>{
+  if((e.key==="Enter"||e.key===" ")&&document.activeElement===document.body&&$("adv")){e.preventDefault();$("adv").click();}
+});
+boot();
+</script>
