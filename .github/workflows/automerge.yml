@@ -1,0 +1,22 @@
+# 検査（QA）がプルリクエストで ✅ になったら、そのプルリクエストを自動でマージし、GitHub Pages の公開を起こす。
+# 中身は共通部品 satou-aaaaa/shared-workflows（last-tell と同じ仕組み）。
+# - 対象は、このリポジトリの中のブランチから出したプルリクエストだけ
+# - 下書きのもの、ラベル「自動マージしない」が付いたもの、.github/ を変えるものはマージしない（手でマージ）
+# - 検査した時のコミットから新しいコミットが積まれていたら、マージしない（新しい方の検査を待つ）
+name: Auto merge
+
+on:
+  workflow_run:
+    workflows: [QA]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  pages: write
+
+jobs:
+  merge:
+    uses: satou-aaaaa/shared-workflows/.github/workflows/automerge.yml@main
+    with:
+      pages_build: true
