@@ -20,8 +20,9 @@
 ## ファイル
 - `index.html`：ゲーム本体（単体HTML、外部ライブラリなし）
 - `docs/aruaru.md`：物語の元にした転職あるあると、エンジニア向け転職サービスの仕組みのメモ
-- `tools/autoplay.mjs`：ランダムに選択肢を選んで最後まで遊び、エラーとエンディングの到達数を確認するスクリプト（Playwright が必要）
+- `qa/run.mjs`：ランダムに選択肢を選んで最後まで遊び、エラーとエンディングの到達数を確認するスクリプト（Playwright が必要。PR ごとに CI でも回る）
 
 ```
-node tools/autoplay.mjs
+cd qa && npm ci && npx playwright install chromium && cd ..
+node qa/run.mjs
 ```
