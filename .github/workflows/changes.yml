@@ -22,5 +22,5 @@ jobs:
     uses: satou-aaaaa/shared-workflows/.github/workflows/changes-page.yml@main
     with:
       app_name: 内定への道
-      ignore_paths: '^(\.github/|\.gemini/|qa/|tools/|docs/|README|CLAUDE|\.nojekyll)'
+      ignore_paths: '^(\.github/|\.claude/|\.gemini/|\.coderabbit|\.nvmrc|qa/|tools/|scripts/|docs/|README|CLAUDE|AGENTS|\.nojekyll)'
       pages_build: true
