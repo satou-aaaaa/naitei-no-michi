@@ -23,6 +23,6 @@
 - `qa/run.mjs`：ランダムに選択肢を選んで最後まで遊び、エラーとエンディングの到達数を確認するスクリプト（Playwright が必要。PR ごとに CI でも回る）
 
 ```
-cd qa && npm ci && npx playwright install chromium && cd ..
+bash scripts/setup.sh   # 最初に一度（Node.js 22 が要る。Windows は Git Bash で）
 node qa/run.mjs
 ```

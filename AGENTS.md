@@ -4,10 +4,17 @@
 
 転職ノベルゲーム「内定への道」。ビルド不要の単体HTML（`index.html`、外部ライブラリなし）。物語の元ネタは `docs/aruaru.md`。
 
+## 準備（最初に一度）
+
+```bash
+bash scripts/setup.sh   # Node.js（版は .nvmrc）を確かめ、qa/ の依存とブラウザを入れる。何度実行してもよい（Windows は Git Bash で）
+```
+
+Claude Code のクラウドセッションでは `.claude/settings.json` のフックが自動で実行する。
+
 ## push する前の確認
 
 ```bash
-cd qa && npm ci && npx playwright install chromium && cd ..
 node qa/run.mjs --games 60          # 失敗した回は同じ --seed と --games で再現できる
 ```
 

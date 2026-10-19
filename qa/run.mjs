@@ -20,7 +20,7 @@ const ENDINGS = 4; // README「エンディングは4種類」
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const url = pathToFileURL(resolve(root, 'index.html')).href;
 
-const browser = await chromium.launch(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
+const browser = await chromium.launch((process.env.CHROMIUM_PATH || process.env.PW_CHROMIUM) ? { executablePath: process.env.CHROMIUM_PATH || process.env.PW_CHROMIUM } : {});
 const page = await browser.newPage();
 const errors = [];
 page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
