@@ -3,6 +3,7 @@
 # - 対象は、このリポジトリの中のブランチから出したプルリクエストだけ
 # - 下書きのもの、ラベル「自動マージしない」が付いたもの、.github/ を変えるものはマージしない（手でマージ）
 # - 検査した時のコミットから新しいコミットが積まれていたら、マージしない（新しい方の検査を待つ）
+# - Secret scan（scan / scan）が同じコミットで ✅ でないとマージしない（2026-10-22 の incident）
 name: Auto merge
 
 on:
@@ -14,6 +15,7 @@ permissions:
   contents: write
   pull-requests: write
   pages: write
+  checks: read   # require_checks で同じコミットの check run を読むのに要る
   actions: write   # マージ後に main で QA を回し直す（recheck_main）のに要る。無いと 403 で黙って止まる（2026-10-21）
 
 jobs:
@@ -21,3 +23,5 @@ jobs:
     uses: satou-aaaaa/shared-workflows/.github/workflows/automerge.yml@main
     with:
       pages_build: true
+      require_checks: |
+        scan / scan
