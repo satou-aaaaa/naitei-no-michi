@@ -4,11 +4,12 @@
 # - 下書きのもの、ラベル「自動マージしない」が付いたもの、.github/ を変えるものはマージしない（手でマージ）
 # - 検査した時のコミットから新しいコミットが積まれていたら、マージしない（新しい方の検査を待つ）
 # - Secret scan（scan / scan）が同じコミットで ✅ でないとマージしない（2026-10-22 の incident）
+# - QA と Secret scan のどちらが後に終わっても再評価する。どちらから起きても QA（自動プレイの検査）と scan / scan の両方が要る（2026-10-31）
 name: Auto merge
 
 on:
   workflow_run:
-    workflows: [QA]
+    workflows: [QA, Secret scan]
     types: [completed]
 
 permissions:
@@ -16,12 +17,16 @@ permissions:
   pull-requests: write
   pages: write
   checks: read   # require_checks で同じコミットの check run を読むのに要る
-  actions: write   # マージ後に main で QA を回し直す（recheck_main）のに要る。無いと 403 で黙って止まる（2026-10-21）
+  actions: write   # マージ後に main で QA を回し直す（dispatch）のに要る。無いと 403 で黙って止まる（2026-10-21）
 
 jobs:
   merge:
     uses: satou-aaaaa/shared-workflows/.github/workflows/automerge.yml@main
     with:
       pages_build: true
+      # きっかけが Secret scan のとき recheck_main は secret-scan.yml を起こそうとするので、QA は dispatch で明示して main で回し直す
+      dispatch: qa.yml
+      recheck_main: false
       require_checks: |
+        自動プレイの検査
         scan / scan
