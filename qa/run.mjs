@@ -38,7 +38,7 @@ for (let g = 0; g < GAMES; g++) {
   for (let i = 0; i < MAX_STEPS; i++) {
     const t = await page.evaluate(() => {
       const again = document.getElementById('again');
-      if (again) { const h = document.querySelector('.ending h2')?.textContent || '(題なし)'; again.click(); return 'END:' + h; }
+      if (again) { const k = document.getElementById('kofi'); if (!k || k.href !== 'https://ko-fi.com/satouaaaaa' || !k.rel.includes('noopener')) return 'nokofi'; const h = document.querySelector('.ending h2')?.textContent || '(題なし)'; again.click(); return 'END:' + h; }
       const cs = [...document.querySelectorAll('.choice')].filter((b) => !b.disabled);
       if (cs.length) { cs[Math.floor(Math.random() * cs.length)].click(); return 'c'; }
       const adv = document.getElementById('adv');
@@ -46,6 +46,7 @@ for (let g = 0; g < GAMES; g++) {
       return 'stuck';
     });
     if (t.startsWith('END:')) { const h = t.slice(4); ends[h] = (ends[h] || 0) + 1; done = true; break; }
+    if (t === 'nokofi') { failures.push(`${g + 1}周目: エンディングに Ko-fi の応援リンクが無い・形が違う`); break; }
     if (t === 'stuck') {
       const ch = await page.evaluate(() => document.getElementById('chapter')?.textContent || '');
       failures.push(`${g + 1}周目: 押せるものが無くて止まった（章: ${ch}）`); break;
